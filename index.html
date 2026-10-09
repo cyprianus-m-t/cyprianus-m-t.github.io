@@ -250,13 +250,36 @@ footer{padding:3.5rem 0 4rem;border-top:1px solid var(--line)}
 </main>
 
 <script>
-(function(){
-  var el=document.getElementById('utc');
-  function tick(){el.textContent='UTC '+new Date().toISOString().slice(11,19)}
-  tick();setInterval(tick,1000);
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    document.querySelectorAll('.pk').forEach(function(n){n.remove()});
-    document.querySelectorAll('.led').forEach(function(n){n.style.animation='none'});
+(function () {
+  var el = document.getElementById('utc');
+
+  function tick() {
+    var now = new Date();
+
+    var time = now.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+
+    var timezone = Intl.DateTimeFormat()
+      .resolvedOptions().timeZone;
+
+    el.textContent = time + ' ' + timezone;
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.pk').forEach(function (n) {
+      n.remove();
+    });
+
+    document.querySelectorAll('.led').forEach(function (n) {
+      n.style.animation = 'none';
+    });
   }
 })();
 </script>
