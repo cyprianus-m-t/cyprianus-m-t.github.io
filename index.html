@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Mojaki Tjeeka · SOC &amp; IT Infrastructure</title>
+<meta name="description" content="BSc Computing graduate building SOC and IT infrastructure labs: SIEM, Active Directory, threat hunting. Open to junior IT and security roles.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a111d; --bg2:#0e1726; --panel:#111c2f; --line:#1f2f4a; --ink:#dce7f6; --muted:#8499b6;
+  --cyan:#38bdf8; --green:#3ddc97; --amber:#f5a524; --red:#ff5d6c; --blue:#6c8cff;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:400 1rem/1.65 var(--sans);-webkit-font-smoothing:antialiased;
+  background:var(--bg);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:48px 48px;background-position:-1px -1px;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(10,17,29,.55),var(--bg) 75%);pointer-events:none;z-index:-1}
+a{color:var(--cyan);text-decoration-color:rgba(56,189,248,.4);text-underline-offset:3px}
+a:hover{color:#fff}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.wrap{max-width:70rem;margin:0 auto;padding:0 1.5rem}
+.mono{font-family:var(--mono)}
+
+/* status bar */
+.bar{position:sticky;top:0;z-index:5;background:rgba(10,17,29,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);font:500 .8rem var(--mono)}
+.bar .wrap{display:flex;gap:1.25rem;align-items:center;height:2.6rem;overflow-x:auto;white-space:nowrap}
+.bar .sp{flex:1}
+.bar a{color:var(--muted);text-decoration:none}.bar a:hover{color:var(--cyan)}
+.led{display:inline-block;width:.55rem;height:.55rem;border-radius:50%;background:var(--green);margin-right:.45rem;box-shadow:0 0 8px var(--green);animation:blink 2.4s infinite}
+@keyframes blink{50%{opacity:.35}}
+@media(max-width:640px){.bar .hide{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1.15fr;gap:2.5rem;align-items:center;padding:4rem 0 3.5rem}
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding-top:2.5rem}}
+.prompt{font:500 .85rem var(--mono);color:var(--red);margin:0 0 1rem}
+h1{font:600 clamp(2.4rem,6vw,4rem)/1.02 var(--sans);letter-spacing:-.03em;margin:0 0 .6rem}
+.role{font:500 1rem var(--mono);color:var(--cyan);margin:0 0 1.25rem}
+.lede{color:#bccbe0;max-width:36ch;font-size:1.125rem;margin:0 0 1.75rem}
+.btns{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn{font:500 .9rem var(--mono);padding:.7rem 1.1rem;border:1px solid var(--cyan);color:var(--cyan);text-decoration:none;border-radius:.3rem}
+.btn.main{background:var(--cyan);color:#04121c;font-weight:600}
+.btn:hover{background:#fff;border-color:#fff;color:#04121c}
+
+.topo{background:rgba(17,28,47,.85);border:1px solid var(--line);border-radius:.5rem;padding:.75rem .75rem .5rem}
+.topo header{display:flex;justify-content:space-between;font:500 .75rem var(--mono);color:var(--muted);padding:.1rem .35rem .5rem}
+.topo svg{display:block;width:100%;height:auto}
+.topo text{font-family:var(--mono)}
+.topo .cap{font:400 .75rem var(--mono);color:var(--muted);padding:.35rem .35rem .2rem}
+
+/* sections */
+section{padding:3.5rem 0;border-top:1px solid var(--line)}
+.sh{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap;margin:0 0 .75rem}
+h2{font:600 clamp(1.5rem,3.5vw,2rem)/1.15 var(--sans);letter-spacing:-.02em;margin:0}
+.path{font:400 .8rem var(--mono);color:var(--muted)}
+.intro{color:var(--muted);max-width:46rem;margin:0 0 1.75rem}
+
+.diagram{margin:0 0 1.75rem;background:var(--panel);border:1px solid var(--line);border-radius:.5rem;padding:.75rem}
+.diagram img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:.3rem;background:#fff}
+.diagram figcaption{font:400 .78rem var(--mono);color:var(--muted);margin:.6rem .2rem 0}
+
+.queue{border:1px solid var(--line);border-radius:.5rem;background:var(--panel);overflow:hidden}
+.q{display:grid;grid-template-columns:2.6rem 6.5rem 1fr;gap:1rem;padding:1.1rem 1.25rem;border-top:1px solid var(--line);align-items:start}
+.q:first-child{border-top:0}
+.q:hover{background:#15233a}
+.q .id{font:500 .85rem var(--mono);color:var(--muted);padding-top:.2rem}
+.stage{font:600 .72rem var(--mono);padding:.2rem .5rem;border-radius:.2rem;border:1px solid;text-align:center;margin-top:.15rem}
+.st-ingest{color:var(--cyan)}.st-detect{color:var(--amber)}.st-hunt{color:var(--blue)}.st-respond{color:var(--green)}
+.q h3{margin:0 0 .25rem;font-size:1.05rem;font-weight:600}
+.q h3 a{color:var(--ink);text-decoration:none}.q h3 a:hover{color:var(--cyan)}
+.q p{margin:0 0 .5rem;color:#bccbe0}
+.tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.tags span{font:400 .75rem var(--mono);padding:.1rem .5rem;border-radius:.2rem;background:var(--bg2);color:var(--muted);border:1px solid var(--line)}
+@media(max-width:640px){.q{grid-template-columns:2.2rem 1fr}.q .stage{grid-column:2;justify-self:start}.q>div{grid-column:1/-1}}
+.finding{margin:1.75rem 0 1rem;padding:1rem 1.25rem;border-left:3px solid var(--red);background:rgba(255,93,108,.07);font:500 .95rem/1.6 var(--mono);max-width:48rem}
+.finding b{color:var(--red);font-weight:600}
+
+/* skills as services */
+.svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:.5rem;padding:1.1rem 1.25rem}
+.card h3{margin:0 0 .6rem;font:600 .85rem var(--mono);color:var(--cyan)}
+.card ul{list-style:none;margin:0;padding:0}
+.card li{padding:.25rem 0;font-size:.95rem;display:flex;gap:.6rem;align-items:baseline}
+.card li::before{content:"";flex:none;width:.45rem;height:.45rem;border-radius:50%;background:var(--green);transform:translateY(-.05rem)}
+
+/* roadmap */
+.roads{border:1px solid var(--line);border-radius:.5rem;background:var(--panel);overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:34rem}
+td,th{padding:.8rem 1.1rem;text-align:left;border-top:1px solid var(--line);font-size:.95rem}
+th{border-top:0;font:500 .75rem var(--mono);color:var(--muted);background:var(--bg2)}
+.pill{font:600 .75rem var(--mono);white-space:nowrap}
+.up{color:var(--green)}.prov{color:var(--amber)}.queued{color:var(--muted)}
+.pill::before{content:"●";margin-right:.45rem}
+.flow{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:1.5rem;font:500 .85rem var(--mono)}
+.flow span{padding:.3rem .65rem;border:1px solid var(--line);border-radius:.25rem;background:var(--panel)}
+.flow i{font-style:normal;color:var(--cyan)}
+
+footer{padding:3.5rem 0 4rem;border-top:1px solid var(--line)}
+.term{background:#070c14;border:1px solid var(--line);border-radius:.5rem;padding:1.25rem 1.5rem;font:400 .95rem/1.9 var(--mono);overflow-x:auto}
+.term .p{color:var(--green)}.term .c{color:var(--muted)}
+.fine{color:var(--muted);font:400 .8rem var(--mono);margin-top:1.5rem}
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="wrap">
+    <span><span class="led" aria-hidden="true"></span>available</span>
+    <span class="hide" id="utc">UTC --:--:--</span>
+    <span class="sp"></span>
+    <a href="#project">lab</a><a href="#skills">skills</a><a href="#roadmap">status</a><a href="#contact">contact</a>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <p class="prompt">cyprianus@lab:~$ whoami</p>
+      <h1>Mojaki Tjeeka</h1>
+      <p class="role"> IT infrastructure · security · Security Operations Center </p>
+      <p class="lede">BSc (Hons) Computing graduate. I build labs, break things on purpose, work out what happened, and write it up. Open to junior IT and security roles.</p>
+      <div class="btns">
+        <a class="btn main" href="#project">View the SOC lab</a>
+        <a class="btn" href="https://github.com/cyprianus-m-t">GitHub</a>
+      </div>
+    </div>
+
+    <div class="topo">
+      <header><span>lab-topology · simplified</span><span>isolated network</span></header>
+      <svg viewBox="0 0 560 330" role="img" aria-label="Simplified lab topology. A Kali attacker connects through a virtual switch to a Windows Server domain controller. Logs flow from the domain controller to the Wazuh SIEM. The attacker has no agent.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8499b6"/></marker>
+        </defs>
+        <!-- links -->
+        <path id="l1" d="M130 90 H250" stroke="#ff5d6c" stroke-width="2" fill="none" stroke-dasharray="5 5"/>
+        <path id="l2" d="M310 90 H430" stroke="#38bdf8" stroke-width="2" fill="none"/>
+        <path id="l3" d="M470 125 V215" stroke="#3ddc97" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+        <path d="M280 125 V215 H410" stroke="#1f2f4a" stroke-width="2" fill="none" stroke-dasharray="2 6"/>
+        <!-- packets -->
+        <circle class="pk" r="4" fill="#ff5d6c"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#l1"/></animateMotion></circle>
+        <circle class="pk" r="4" fill="#38bdf8"><animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite"><mpath href="#l2"/></animateMotion></circle>
+        <circle class="pk" r="4" fill="#3ddc97"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#l3"/></animateMotion></circle>
+        <!-- nodes -->
+        <g><rect x="20" y="55" width="110" height="70" rx="6" fill="#111c2f" stroke="#ff5d6c"/>
+          <text x="75" y="85" text-anchor="middle" fill="#dce7f6" font-size="14" font-weight="600">KALI</text>
+          <text x="75" y="105" text-anchor="middle" fill="#8499b6" font-size="10">attacker · no agent</text></g>
+        <g><rect x="250" y="65" width="60" height="50" rx="6" fill="#111c2f" stroke="#38bdf8"/>
+          <text x="280" y="88" text-anchor="middle" fill="#dce7f6" font-size="11" font-weight="600">vSWITCH</text>
+          <text x="280" y="103" text-anchor="middle" fill="#8499b6" font-size="9">VMware</text></g>
+        <g><rect x="430" y="55" width="130" height="70" rx="6" fill="#111c2f" stroke="#6c8cff"/>
+          <text x="495" y="82" text-anchor="middle" fill="#dce7f6" font-size="13" font-weight="600">WIN SERVER</text>
+          <text x="495" y="100" text-anchor="middle" fill="#8499b6" font-size="10">AD DS · DNS · DHCP</text>
+          <text x="495" y="114" text-anchor="middle" fill="#8499b6" font-size="10">Wazuh agent</text></g>
+        <g><rect x="410" y="215" width="150" height="80" rx="6" fill="#111c2f" stroke="#3ddc97"/>
+          <text x="485" y="245" text-anchor="middle" fill="#dce7f6" font-size="14" font-weight="600">WAZUH SIEM</text>
+          <text x="485" y="265" text-anchor="middle" fill="#8499b6" font-size="10">detect · hunt · respond</text></g>
+        <text x="190" y="82" text-anchor="middle" fill="#ff5d6c" font-size="10">attacks</text>
+        <text x="370" y="82" text-anchor="middle" fill="#38bdf8" font-size="10">traffic</text>
+        <text x="480" y="175" fill="#3ddc97" font-size="10">logs</text>
+        <g transform="translate(20 250)"><rect width="260" height="50" rx="4" fill="rgba(255,93,108,.07)" stroke="#1f2f4a"/>
+          <text x="12" y="21" fill="#ff5d6c" font-size="11" font-weight="600">visibility constraint</text>
+          <text x="12" y="38" fill="#8499b6" font-size="10">SIEM sees the target, not the attacker</text></g>
+      </svg>
+      <p class="cap">Full architecture diagram below.</p>
+    </div>
+  </div>
+
+  <section id="project">
+    <div class="sh"><h2>SOC Analyst Home Lab</h2><span class="path">/projects/soc-analyst-homelab</span></div>
+    <p class="intro">A defender-side lab. Attacks run from Kali and are detected, hunted and responded to from the SIEM, with no agent on the attacker machine, mirroring real SOC visibility constraints. Every project ships with configs, screenshots and a formal write-up.</p>
+
+    <figure class="diagram">
+      <img src="https://raw.githubusercontent.com/cyprianus-m-t/cyprianus-m-t/main/assets/wazuh_soc_lab_diagram.png" alt="Network architecture of the SOC Analyst Home Lab: Kali attacker, Windows Server and Active Directory, and the Wazuh SIEM." loading="lazy">
+      <figcaption>lab network architecture · VMware · Windows Server · Kali Linux · Wazuh</figcaption>
+    </figure>
+
+    <div class="queue">
+      <div class="q"><span class="id">01</span><span class="stage st-ingest">INGEST</span><div>
+        <h3><a href="https://github.com/cyprianus-m-t/soc-analyst-homelab/blob/main/project-1-siem-setup">SIEM setup and log ingestion</a></h3>
+        <p>Deployed Wazuh, validated the end-to-end log pipeline and tuned the audit policy.</p>
+        <div class="tags"><span>SIEM</span><span>Audit policy</span></div></div></div>
+      <div class="q"><span class="id">02</span><span class="stage st-detect">DETECT</span><div>
+        <h3><a href="https://github.com/cyprianus-m-t/soc-analyst-homelab/blob/main/project-2-brute-force">Brute force detection</a></h3>
+        <p>Simulated SMB and RDP attacks with Hydra, then wrote custom frequency-correlation rules to catch them.</p>
+        <div class="tags"><span>Custom rules</span><span>MITRE ATT&amp;CK</span></div></div></div>
+      <div class="q"><span class="id">03</span><span class="stage st-detect">DETECT</span><div>
+        <h3><a href="https://github.com/cyprianus-m-t/soc-analyst-homelab/blob/main/project-3-ad-attacks">Active Directory attack detection</a></h3>
+        <p>Detected rogue account creation, Domain Admin escalation and log clearing through Windows event analysis.</p>
+        <div class="tags"><span>AD security</span><span>Log analysis</span></div></div></div>
+      <div class="q"><span class="id">04</span><span class="stage st-hunt">HUNT</span><div>
+        <h3><a href="https://github.com/cyprianus-m-t/soc-analyst-homelab/blob/main/project-4-threat-hunting">Threat hunting</a></h3>
+        <p>Reconstructed a three-event attack chain from fragmented SIEM logs and wrote a P1 case note for Tier 2 escalation.</p>
+        <div class="tags"><span>IOC pivoting</span><span>Case documentation</span></div></div></div>
+      <div class="q"><span class="id">05</span><span class="stage st-respond">RESPOND</span><div>
+        <h3><a href="https://github.com/cyprianus-m-t/soc-analyst-homelab/blob/main/project-5-incident-response">Incident response simulation</a></h3>
+        <p>Ran the full incident lifecycle (containment, eradication, recovery) and wrote the post-incident report.</p>
+        <div class="tags"><span>NIST 800-61</span><span>AD remediation</span></div></div></div>
+      <div class="q"><span class="id">06</span><span class="stage st-detect">Detect</span><div>
+        <h3><a href="https://github.com/cyprianus-m-t/soc-analyst-homelab/blob/main/project-6-file-integrity-monitoring">File Integrity Monitoring</a></h3>
+        <p>Set up file integrity monitoring in Wazuh to baseline critical files and alert on unauthorised changes.</p>
+        <div class="tags"><span>FIM</span><span>wazuh</span></div></div></div>
+    </div>
+
+    <p class="finding"><b>finding:</b> the attacker cleared the local Security log three times. Wazuh had already forwarded everything.</p>
+    <a href="https://github.com/cyprianus-m-t/soc-analyst-homelab">Open the repository on GitHub</a>
+  </section>
+
+  <section id="skills">
+    <div class="sh"><h2>Capabilities</h2><span class="path">/skills</span></div>
+    <div class="svc">
+      <div class="card"><h3>security.blue_team</h3><ul><li>SIEM deployment and tuning</li><li>Windows event log analysis</li><li>Custom detection rules</li><li>Threat hunting, IOC pivoting</li><li>MITRE ATT&amp;CK mapping</li><li>Incident response (NIST 800-61)</li></ul></div>
+      <div class="card"><h3>infra.virtualization</h3><ul><li>VMware lab environments</li><li>Windows Server and AD DS</li><li>DNS, DHCP, Group Policy</li><li>Linux server administration</li><li>Network troubleshooting</li><li>Virtualisation and snapshots</li></ul></div>
+      <div class="card"><h3>dev.automation</h3><ul><li>Python, PowerShell, Bash</li><li>Git and GitHub workflows</li><li>REST API integration</li><li>Web apps (PHP, JS, Node)</li><li>SQL and databases</li></ul></div>
+      <div class="card"><h3>data.ml</h3><ul><li>Data cleaning and EDA</li><li>Pandas, Matplotlib</li><li>scikit-learn experiments</li><li>Jupyter notebooks</li><li>Model evaluation</li></ul></div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="sh"><h2>Lab status</h2><span class="path">/roadmap</span></div>
+    <p class="intro">What is live, what I am building now and what is queued. Each project is linked here once it ships.</p>
+    <div class="roads"><table>
+      <tr><th>STATUS</th><th>AREA</th><th>PROJECT</th></tr>
+      <tr><td class="pill up">LIVE</td><td>Security</td><td><a href="https://github.com/cyprianus-m-t/soc-analyst-homelab">SOC Analyst Home Lab</a></td></tr>
+      <tr><td class="pill prov">BUILDING</td><td>Infrastructure</td><td>Virtualization lab: hypervisor setup, networking, VM templates</td></tr>
+      <tr><td class="pill prov">BUILDING</td><td>Infrastructure</td><td>Active Directory lab: domain build, users and groups, GPO, DNS and DHCP</td></tr>
+      <tr><td class="pill queued">QUEUED</td><td>Data</td><td>Analytics project: dataset, cleaning, insights, dashboard</td></tr>
+      <tr><td class="pill queued">QUEUED</td><td>ML</td><td>Machine learning project: problem, model, evaluation, write-up</td></tr>
+      <tr><td class="pill queued">QUEUED</td><td>Programming</td><td>Automation scripts and small tools</td></tr>
+    </table></div>
+    <div class="flow" aria-label="How I work"><span>Plan</span><i>›</i><span>Build</span><i>›</i><span>Test / break</span><i>›</i><span>Analyse</span><i>›</i><span>Document</span><i>›</i><span>Improve</span></div>
+  </section>
+
+  <footer id="contact">
+    <div class="sh"><h2>Contact</h2><span class="path">/contact</span></div>
+    <div class="term">
+      <div><span class="p">$</span> mail <a href="mailto:mojakitjeeka@gmail.com">mojakitjeeka@gmail.com</a></div>
+      <div><span class="p">$</span> git clone <a href="https://github.com/cyprianus-m-t">github.com/cyprianus-m-t</a></div>
+      <div><span class="c"># junior IT, security, data or software roles</span></div>
+    </div>
+    <p class="fine">All attack simulations run in an isolated lab environment.</p>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var el=document.getElementById('utc');
+  function tick(){el.textContent='UTC '+new Date().toISOString().slice(11,19)}
+  tick();setInterval(tick,1000);
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.querySelectorAll('.pk').forEach(function(n){n.remove()});
+    document.querySelectorAll('.led').forEach(function(n){n.style.animation='none'});
+  }
+})();
+</script>
+</body>
+</html>
